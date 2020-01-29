@@ -24,7 +24,7 @@ if __name__ == "__main__":
 	page_breaks = []
 
 	# Set Column Widths
-	column_widths = [11,14,12,7,8,2,10]
+	column_widths = [6,11,3,3,29,2,10]
 	num_cols = len(column_widths)
 	for c in range(num_cols):
 		worksheet.set_column(c,c,column_widths[c])
@@ -130,15 +130,14 @@ if __name__ == "__main__":
 
 		cards_on_current_sheet += 1
 
-		worksheet.write(row, col+0, 'PI/Investigator')
+		worksheet.write(row, col+0, 'PI')
 		worksheet.write(row, col+1, settings["PI_name"])
-		worksheet.write(row, col+3, 'Protocol')
-		worksheet.write(row, col+4, settings["protocol_num"])
+		worksheet.write(row, col+4, 'Protocol: {}'.format(settings["protocol_num"]))
 		worksheet.write(row+1, col+0, 'Contact')
 		worksheet.write(row+1, col+1, settings["contact_name"])
-		worksheet.write(row+1, col+2, settings["contact_phone"])
-		worksheet.write(row+2, col+0, 'Species')
-		worksheet.write(row+2, col+1, settings["species"])
+		worksheet.write(row+2, col+1, settings["contact_phone"])
+		worksheet.write(row+3, col+0, 'Species')
+		worksheet.write(row+3, col+1, settings["species"])
 		gender_row = row + 2
 		male_col = col+2
 		female_col = col+3
@@ -146,13 +145,13 @@ if __name__ == "__main__":
 		worksheet.write(gender_row, male_col, 'M')
 		worksheet.write(gender_row, female_col, 'F')
 		worksheet.write(gender_row, mf_col, 'M/F')
-		worksheet.write(row+3, col+0, 'Strain')
-		worksheet.write(row+4, col+0, 'Cage #')
-		worksheet.write(row+6, col+0, 'Mouse Tag')
-		worksheet.write(row+6, col+1, 'Gender')
-		worksheet.write(row+6, col+2, 'DOB')
-		worksheet.write(row+6, col+3, 'Age')
-		worksheet.write(row+6, col+4, 'Genotype')
+		worksheet.write(row+4, col+0, 'Strain')
+		worksheet.write(row+5, col+0, 'Cage #')
+		worksheet.write(row+7, col+0, 'Tag')
+		worksheet.write(row+7, col+1, 'DOB')
+		worksheet.write(row+7, col+2, 'Sex')
+		worksheet.write(row+7, col+3, 'Age')
+		worksheet.write(row+7, col+4, 'Genotype')
 		worksheet.write(row+3, col+1, mouseline)
 		# worksheet.write(row+4, col+1, s.cell(cage_row,0).value)
 
@@ -166,36 +165,36 @@ if __name__ == "__main__":
 
 			# Mouse Tag Number
 			mouse_num = re.split('\[',mouse_data[i])[0]
-			worksheet.write(row+7+i,col+0,mouse_num)
+			worksheet.write(row+8+i,col+0,mouse_num)
 
 			# Gender of particular mouse
 			male = re.search('\[M',mouse_data[i])
 			female = re.search('\[F',mouse_data[i])
 			if male:
 				num_males += 1
-				worksheet.write(row+7+i,col+1,'M')
+				worksheet.write(row+8+i,col+2,'M')
 			if female:
 				num_females += 1
-				worksheet.write(row+7+i,col+1,'F')
+				worksheet.write(row+8+i,col+2,'F')
 
 			# DOB
 			mouse_dob = re.search('[0-1][0-9]\-[0-3][0-9]\-20[0-9][0-9]',mouse_data[i])
 			if mouse_dob:
-				worksheet.write(row+7+i,col+2,mouse_dob.group())
+				worksheet.write(row+8+i,col+1,mouse_dob.group())
 
 			# Age
 			mouse_age = re.search('[0-9]*[dw]',mouse_data[i])
 			if mouse_age:
-				worksheet.write(row+7+i,col+3,mouse_age.group())
+				worksheet.write(row+8+i,col+3,mouse_age.group())
 
 			# Genotype
-			worksheet.write(row+7+i,col+4,mouse_genotypes[i])
+			worksheet.write(row+8+i,col+4,mouse_genotypes[i])
 
 		if num_males > 0:
 			if num_females > 0:
 				cell = chr(65+mf_col)+str(gender_row+1)
 				worksheet.write(cell, 'M/F', outline_format)
-				mf_range = chr(65+female_col)+str(gender_row+2)+":"+chr(65+mf_col)+str(gender_row+3)
+				mf_range = chr(65+female_col)+str(gender_row+3)+":"+chr(65+mf_col)+str(gender_row+4)
 				worksheet.merge_range(mf_range, 'MATING', merge_format)
 			else:
 				cell = chr(65+male_col)+str(gender_row+1)
