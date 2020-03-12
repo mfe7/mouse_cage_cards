@@ -17,26 +17,22 @@ git clone https://github.com/mfe7/mouse_cage_cards.git
 #### Install the required python libraries
 Only the very first time you've downloaded the code, run this in the terminal:
 ```bash
-pip install xlsxwriter xlrd
+python -m pip install xlsxwriter xlrd pyyaml
 ```
 
 #### Set up your contact info 
 
-Create a file called `settings.yaml` in this repo (`~/mouse_cage_cards`) that has the following info:
-```yaml
-PI_name: pi_last_name
-protocol_num: 00000
-contact_name: 'Bob Smith'
-contact_phone: '(123) 555-1234'
-species: Mouse
-```
+Update the `settings.yaml` file to your custom settings, such as contact info, PI name, protocol number.
 
 ## To update your cage cards
 
 #### Get the Cage List from SoftMouse.NET
 * Click "Cages" in the top bar
 * Export the Cage List as a spreadsheet
-* Re-name the downloaded spreadsheet to `softmousedb.xlsx` and place it in this folder (`~/mouse_cage_cards`)
+* Re-name the downloaded spreadsheet to `softmousedb.xlsx` and place it in this folder (`~/mouse_cage_cards`). In the terminal that means:
+```bash
+mv ~/Downloads/<name_of_downloaded_xlsx> ~/mouse_cage_cards/softmousedb.xlsx
+```
 
 #### Re-generate the notecards
 In a terminal, run:
